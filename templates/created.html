@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}이벤트 생성 완료 - {{ event.title }}{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto py-12">
+    <div class="bg-white p-10 rounded-3xl card-shadow border border-slate-100 text-center space-y-8">
+        <div class="w-20 h-20 bg-secondary/20 text-secondary rounded-full flex items-center justify-center mx-auto">
+            <span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1">check_circle</span>
+        </div>
+        <div class="space-y-2">
+            <h2 class="text-3xl font-extrabold tracking-tight">이벤트 생성 완료!</h2>
+            <p class="text-slate-500 text-sm">참가자들에게 링크를 공유하여 일정을 취합하세요.</p>
+        </div>
+
+        <div class="text-left bg-primary/5 p-6 rounded-2xl space-y-3 border border-primary/10">
+            <div class="space-y-1">
+                <p class="text-[10px] font-black text-primary/40 uppercase tracking-widest">Event Created</p>
+                <h4 class="text-xl font-extrabold text-primary">{{ event.title }}</h4>
+            </div>
+            <div class="space-y-1 text-xs text-slate-500 font-medium">
+                <p>Host: <span class="text-slate-700 font-bold">{{ event.host_name }}</span></p>
+                <p>Time: <span class="text-slate-700 font-bold">{{ event.time_start|pad }}:00 - {{ event.time_end|pad }}:00</span></p>
+            </div>
+        </div>
+
+        <div class="space-y-3">
+            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block text-left px-1">공유 링크</label>
+            <div class="flex gap-2 p-1.5 bg-slate-100 rounded-xl border border-slate-200">
+                <input type="text" id="shareLink" readonly class="flex-1 bg-transparent border-none focus:ring-0 text-xs font-medium px-3"
+                       value="{{ request.host_url }}event/{{ event.id }}"/>
+                <button onclick="copyLink()" class="bg-primary text-white px-4 py-2 rounded-lg text-xs font-bold hover:brightness-110 transition-all">복사</button>
+            </div>
+            <p id="copyMsg" class="text-[10px] text-primary font-bold hidden">링크가 클립보드에 복사되었습니다!</p>
+        </div>
+
+        <div class="flex flex-col gap-3 pt-4">
+            <a href="/event/{{ event.id }}" class="editorial-gradient text-white py-4 rounded-xl font-bold text-sm shadow-lg text-center block">이벤트 페이지로 이동</a>
+            <a href="/" class="text-slate-400 font-bold text-xs hover:text-primary transition-colors">새 이벤트 만들기</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyLink() {
+    const input = document.getElementById('shareLink');
+    input.select();
+    navigator.clipboard.writeText(input.value).then(() => {
+        const msg = document.getElementById('copyMsg');
+        msg.classList.remove('hidden');
+        setTimeout(() => msg.classList.add('hidden'), 2000);
+    });
+}
+</script>
+{% endblock %}

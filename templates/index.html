@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Collection Pulse - 새 이벤트 만들기{% endblock %}
+{% block content %}
+<div class="space-y-8">
+    <div class="space-y-2 text-center md:text-left">
+        <span class="text-[10px] font-black tracking-[0.2em] text-primary uppercase bg-primary/10 px-3 py-1 rounded-full">New Event</span>
+        <h2 class="text-4xl font-extrabold tracking-tighter leading-none">Create Your <span class="text-primary">Schedule Pulse</span></h2>
+        <p class="text-slate-500 text-sm max-w-lg">행사 일정을 만들고, 팀원들의 가능한 시간을 시각적으로 취합하세요.</p>
+    </div>
+
+    <form action="/create" method="POST" class="bg-white p-8 rounded-2xl card-shadow border border-slate-100 space-y-8" id="createForm">
+        <!-- 행사 기본 정보 -->
+        <div class="space-y-6">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">info</span> 행사 기본 정보
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">주최자 이름 *</label>
+                    <input type="text" name="host_name" required class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/20" placeholder="이름을 입력하세요"/>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">행사 제목 *</label>
+                    <input type="text" name="title" required class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/20" placeholder="예: 2026 하반기 워크숍"/>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">안내 사항</label>
+                <textarea name="description" rows="3" class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary/20" placeholder="장소, 준비물 등 참가자에게 전달할 내용을 입력하세요"></textarea>
+            </div>
+        </div>
+
+        <!-- 시간 범위 설정 -->
+        <div class="space-y-6">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">schedule</span> 시간 범위 설정
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">시작 시간</label>
+                    <select name="time_start" id="timeStart" class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm"></select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">종료 시간</label>
+                    <select name="time_end" id="timeEnd" class="w-full bg-slate-50 border-none rounded-xl p-3 text-sm"></select>
+                </div>
+            </div>
+        </div>
+
+        <!-- 날짜 선택 -->
+        <div class="space-y-6">
+            <div class="flex justify-between items-center">
+                <h3 class="text-lg font-bold flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">calendar_month</span> 날짜 선택 *
+                </h3>
+                <div class="flex gap-2">
+                    <button type="button" id="prevMonth" class="p-2 hover:bg-slate-100 rounded-lg transition-colors"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+                    <span class="text-xs font-bold self-center min-w-[80px] text-center" id="calTitle"></span>
+                    <button type="button" id="nextMonth" class="p-2 hover:bg-slate-100 rounded-lg transition-colors"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+                </div>
+            </div>
+            <div class="p-4 bg-slate-50 rounded-2xl" id="calendar"></div>
+            <div class="min-h-[40px]" id="selectedDates"></div>
+            <div id="hiddenDates"></div>
+        </div>
+
+        <button type="submit" id="submitCreate" disabled class="w-full editorial-gradient text-white py-4 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 disabled:opacity-50 disabled:shadow-none hover:scale-[1.01] active:scale-[0.99] transition-all">
+            이벤트 생성하기
+        </button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/calendar.js"></script>
+{% endblock %}
